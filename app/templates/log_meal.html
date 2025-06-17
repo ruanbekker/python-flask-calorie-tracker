@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Log Meal</h2>
+<form method="POST">
+  <div class="mb-3">
+    <label>Meal Category:</label>
+    <select name="category" class="form-control">
+      <option>Breakfast</option>
+      <option>Snack</option>
+      <option>Lunch</option>
+      <option>Supper</option>
+      <option>Drinks</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label>Food:</label>
+    <select name="food_id" class="form-control">
+      {% for food in foods %}
+      <option value="{{ food.id }}">{{ food.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="mb-3">
+    <label>Quantity:</label>
+    <input type="number" name="quantity" step="0.1" class="form-control" value="1">
+  </div>
+  <button class="btn btn-success">Log</button>
+</form>
+{% endblock %}
+

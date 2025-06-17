@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Today's Meals</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Meal</th>
+      <th>Food</th>
+      <th>Quantity</th>
+      <th>Calories</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for meal in meals %}
+    <tr>
+      <td>{{ meal.category }}</td>
+      <td>{{ meal.food.name }}</td>
+      <td>{{ meal.quantity }}</td>
+      <td>{{ (meal.food.calories * meal.quantity) | round(2) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h4>Total Calories: {{ total_calories | round(2) }}</h4>
+{% endblock %}
+

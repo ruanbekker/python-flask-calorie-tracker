@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Add Food</h2>
+<form method="POST">
+  <div class="mb-3"><input name="name" class="form-control" placeholder="Name" required></div>
+  <div class="mb-3"><input name="protein" class="form-control" placeholder="Protein (g)" required></div>
+  <div class="mb-3"><input name="carbs" class="form-control" placeholder="Carbs (g)" required></div>
+  <div class="mb-3"><input name="fat" class="form-control" placeholder="Fat (g)" required></div>
+  <div class="mb-3"><input name="calories" class="form-control" placeholder="Calories" required></div>
+  <button class="btn btn-primary">Add</button>
+</form>
+{% endblock %}
+
