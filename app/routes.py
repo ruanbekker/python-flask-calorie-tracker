@@ -1,7 +1,8 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, jsonify
 from app import db
 from app.models import Food, Meal
 from datetime import datetime
+from sqlalchemy import func
 from flask import current_app as app
 
 @app.route('/')
@@ -40,4 +41,18 @@ def log_meal():
         db.session.commit()
         return redirect(url_for('index'))
     return render_template('log_meal.html', foods=foods)
+
+@app.route('/report')
+def report():
+    daily_totals = (
+        db.session.query(Meal.date, func.sum(Meal.quantity * Food.calories))
+        .join(Food)
+        .group_by(Meal.date)
+        .order_by(Meal.date)
+        .all()
+    )
+    labels = [d[0].strftime('%Y-%m-%d') for d in daily_totals]
+    values = [round(d[1], 2) for d in daily_totals]
+
+    return render_template('report.html', labels=labels, values=values, data=daily_totals)
 

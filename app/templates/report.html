@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>📈 Calorie Report</h2>
+
+<canvas id="calorieChart" height="100"></canvas>
+
+<table class="table mt-4">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Total Calories</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for day, total in data %}
+    <tr>
+      <td>{{ day.strftime('%Y-%m-%d') }}</td>
+      <td>{{ total | round(2) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('calorieChart');
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: {{ labels | tojson }},
+    datasets: [{
+      label: 'Calories per Day',
+      data: {{ values | tojson }},
+      borderWidth: 2,
+      fill: true,
+      tension: 0.3
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+</script>
+{% endblock %}
+
