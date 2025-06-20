@@ -9,4 +9,42 @@ services:
       - .:/app
     environment:
       - FLASK_ENV=development
+      - DATABASE_URI=mysql://root:rootpassword@db/calories
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - public
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
 
+  db:
+    image: mysql:8
+    container_name: db
+    restart: unless-stopped
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_USER=dba
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=calories
+    volumes:
+      - ./data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysql" ,"-h", "db", "-P", "3306", "-u", "root", "-prootpassword", "-e", "SELECT VERSION()"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    networks:
+      - public
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+
+networks:
+  public:
+    name: public
